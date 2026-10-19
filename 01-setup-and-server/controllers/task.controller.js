@@ -80,3 +80,23 @@ if (!mongoose.isValidObjectId(taskId))
     });
   }
 };
+
+
+exports.deleteTask=async(req,res)=>{
+  const taskId=req.params.id;
+    
+if (!mongoose.isValidObjectId(taskId))
+    return res.status(400).send({ message: "invalid task id" })
+  try {
+  const task = await Task.findByIdAndDelete(taskId);
+    return res.status(200).send({
+        message:'task deleted',
+      task,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: "faild to delete task",
+    });
+  }
+  
+}
