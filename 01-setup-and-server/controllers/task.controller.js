@@ -46,3 +46,37 @@ exports.getSingleTask = async (req, res) => {
     return res.status(500).send({ message: "something went wrong" });
   }
 };
+
+
+
+exports.updateTaskField = async (req, res) => {
+  const { title, done } = req.body;
+  const taskId=req.params.id;
+
+if (!mongoose.isValidObjectId(taskId))
+    return res.status(400).send({ message: "invalid task id" });
+
+  const updatedTask={}
+  if(title!==undefined) updatedTask.title=title
+  if(done!==undefined) updatedTask.done=done
+
+
+
+  try {
+  const task = await Task.findByIdAndUpdate(
+  taskId,
+  updatedTask,
+  {
+    new: true,
+    runValidators: true,
+  }
+);
+    return res.status(200).send({
+      task,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: "faild to update task",
+    });
+  }
+};
