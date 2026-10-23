@@ -2,6 +2,8 @@ const { default: mongoose } = require("mongoose");
 const Task = require("../models/task.models");
 
 exports.getTasks = async (req, res) => {
+    const status=req.searchParams
+    console.log('status',status);
   const tasks = await Task.find();
   res.json(tasks);
 };
