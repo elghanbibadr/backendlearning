@@ -1,4 +1,6 @@
 const { default: mongoose } = require("mongoose");
+const bcrypt = require("bcrypt");
+const _=require("lodash")
 const User = require("../models/user.models");
 
 exports.registerUser = async (req, res) => {
@@ -10,9 +12,13 @@ exports.registerUser = async (req, res) => {
     // check if user already registered
     let user=await User.findOne({email})
     if(user)return res.status(400).send({message:'user already registred'});
-    user=new User({email,password})
 
+    // hashing password 
+    const passwordHash = await bcrypt.hash(password, 10);
+    user=new User({email, password: passwordHash})
+        
      await user.save()
-     return res.send(user)
+    
+     return res.send( _.pick(user,["_id","email"]))
     
 };
