@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/tasks", taskRoutes);
-app.use("/api/register", UserRoutes);
+app.use("/api/auth", UserRoutes);
 
 
 module.exports = app;

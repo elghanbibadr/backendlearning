@@ -1,7 +1,12 @@
 require("dotenv").config();
 const app = require("./app");
 const connectDB = require("./config/db");
+const config=require('config');
 
+if(!config.get('jwtPrivateKey')){
+    console.error("FATAL ERROR:invalid jwt")
+    process.exit(1)
+}
 const PORT = process.env.PORT || 3000;
 
 connectDB().then(() => {
